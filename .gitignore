@@ -1,0 +1,7 @@
+docker-compose.yml
+
+/logs/apache/*
+/logs/mysql/*
+
+!/logs/apache/.gitkeep
+!/logs/mysql/.gitkeep

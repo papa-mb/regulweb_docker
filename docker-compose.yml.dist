@@ -1,0 +1,24 @@
+version: '2'
+services:
+    mysql:
+        image: "mysql:5.5"
+        volumes:
+            - %YOUR_LOCAL_MYSQL_VAR_LIB_DIR%:/var/lib/mysql
+            - ./logs/mysql/:/var/log/mysql
+            - ./config/mysql/:/etc/mysql/conf.d/
+        environment:
+          MYSQL_USER: %your_user%
+          MYSQL_PASSWORD: "%your_password%"
+          MYSQL_ROOT_PASSWORD: "%your_root_user_password%"
+          MYSQL_BIND_ADDRESS: %IP_ADDR_OF_apache_CONTAINER%
+    apache:
+        build: images/apache/.
+        image: "apache2.2.15-php5:mine"
+        volumes:
+            - %YOUR_LOCAL_WORK_DIR%:/opt/regulweb
+            - ./logs/apache/:/var/log/httpd
+            - %YOUR_LOCAL_APACHE_ANT_ROOT_DIR%:/home/www-data/apache-ant/apache-ant-1.9.6
+            - %YOUR_LOCAL_PHPTOOLS_ROOT_DIR%:/home/www-data/phptools
+            - %YOUR_LOCAL_JDK1.8.0_45_ROOT_DIR%:/opt/jdk1.8.0_45
+        links:
+            - mysql:mysql

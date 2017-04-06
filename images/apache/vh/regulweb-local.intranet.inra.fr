@@ -1,0 +1,37 @@
+<VirtualHost 172.19.0.3:80>
+    DocumentRoot /opt/regulweb/web/
+    ServerName regulweb-local.intranet.inra.fr
+    ServerAlias www.regulweb-local.intranet.inra.fr
+    UseCanonicalName On
+
+    #Pour htaccess
+    DirectoryIndex app.php app_dev.php
+
+    <Directory /opt/regulweb>
+        AllowOverride All
+        Order Allow,Deny
+        Allow from all
+    </Directory>
+
+    CustomLog /var/log/httpd/regulweb-local.intranet.inra.fr.access.log combined
+    ErrorLog /var/log/httpd/regulweb-local.intranet.inra.fr.error.log
+
+    # On active systematiquement le moteur de reecriture
+    RewriteEngine On
+
+    # On redirige vers la mire de maintenance
+    # si le fichier maintenance.html est présent
+    Alias /maintenance /opt/regulweb/maintenance
+    RewriteRule /maintenance($|/) - [L]
+
+    #Mantis 0733417
+    RewriteCond /opt/regulweb/maintenance/maintenance.html -f
+
+    RewriteRule .* /maintenance/maintenance.html [PT,L]
+    ErrorDocument 503 /maintenance/maintenance.html
+
+    # decommenter si HTTPS only
+    # RewriteRule     (.*)  https://%{HTTP_HOST}$1     [R,L]
+
+    #Include /etc/httpd/vh/regulweb.intranet.inra.fr.d
+</VirtualHost>
