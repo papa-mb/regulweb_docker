@@ -17,7 +17,7 @@ RUN sed -i 's|memory_limit =|memory_limit = -1|' /etc/php.ini
 RUN mkdir /home/www-data/sessions && chown www-data:www-data /home/www-data/sessions && chmod 700 /home/www-data/sessions
 
 RUN yum install -y php-mysql php-devel php-gd php-pecl-memcache php-pspell php-snmp php-xmlrpc php-xml php-ldap\
-    mysql
+    mysql git
 
 COPY apache-foreground /usr/local/bin/
 RUN mkdir /etc/httpd/vh
